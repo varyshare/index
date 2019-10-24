@@ -160,12 +160,28 @@ function msToTime(ms){
 }
 var timeID;
 function setalarm(){
-  var hour= document.getElementById("hour").value;
-  console.log(hour);
-  var minute= document.getElementById("minute").value;
-  var second = document.getElementById("second").value;
-  var ms = ((hour*6+minute)*6+second)*1000;
-  console.log(ms);
+  clearInterval(timeID);
+  document.getElementById("state").innerHTML = "无闹钟计划";
+  var digit = ['hour', 'minute', 'second'];
+  for(var item in digit){
+    console.log(digit[item]);
+    var val = document.getElementById(digit[item]).value;
+    console.log(val.length);
+    if(val.length==0)
+      document.getElementById(digit[item]).value=(0).toString();
+  }
+  var hour=Math.abs(parseInt(document.getElementById("hour").value));
+  var minute=Math.abs(parseInt(document.getElementById("minute").value));
+  var second =Math.abs(parseInt(document.getElementById("second").value));
+  if(hour==NaN)
+    hour = 0;
+  if(minute==NaN)
+    minute = 0;
+  if(second==NaN)
+    second = 0;
+    
+  var ms = ((hour*60+minute)*60+second)*1000;
+
   document.getElementById("state").innerHTML = "设置成功";
   timeID = setInterval(function(){document.getElementById("state").innerHTML=msToTime(ms);ms-=1000;},"1000");
   setTimeout(function(){
