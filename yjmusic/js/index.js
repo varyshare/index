@@ -150,19 +150,30 @@ function directionAware() {
   
 }
 
+function msToTime(ms){
+    var s = parseInt(ms/1000);
+    var m = parseInt(s/60);
+    s = parseInt(s%60);
+    var h = parseInt(m/60);
+    m = parseInt(m%60);
+    return h+":"+m+":"+s;
+}
+var timeID;
 function setalarm(){
   var hour= document.getElementById("hour").value;
+  console.log(hour);
   var minute= document.getElementById("minute").value;
   var second = document.getElementById("second").value;
-  var ms = ((hour*60+minute)*60+second)*1000;
+  var ms = ((hour*6+minute)*6+second)*1000;
   console.log(ms);
   document.getElementById("state").innerHTML = "设置成功";
-
+  timeID = setInterval(function(){document.getElementById("state").innerHTML=msToTime(ms);ms-=1000;},"1000");
   setTimeout(function(){
           if (player.paused) {
             playPause.attributes.d.value = "M0 0h6v24H0zM12 0h6v24h-6z";
             player.play();
           }
+          clearInterval(timeID);
           document.getElementById("state").innerHTML = "无闹钟计划";
 
           }, (ms).toString() );
