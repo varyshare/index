@@ -160,6 +160,9 @@ function msToTime(ms){
 }
 var timeID;
 function setalarm(){
+  playPause.attributes.d.value = "M18 12L0 24V0";
+  player.pause();
+  
   clearInterval(timeID);
   document.getElementById("state").innerHTML = "无闹钟计划";
   var digit = ['hour', 'minute', 'second'];
@@ -183,7 +186,7 @@ function setalarm(){
   var ms = ((hour*60+minute)*60+second)*1000;
 
   document.getElementById("state").innerHTML = "设置成功";
-  timeID = setInterval(function(){document.getElementById("state").innerHTML=msToTime(ms);ms-=1000;},"1000");
+  timeID = setInterval(function(){document.getElementById("state").innerHTML="时间还剩"+msToTime(ms)+"播放音乐";ms-=1000;},"1000");
   setTimeout(function(){
           if (player.paused) {
             playPause.attributes.d.value = "M0 0h6v24H0zM12 0h6v24h-6z";
