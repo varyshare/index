@@ -6,9 +6,7 @@ var playpauseBtn = audioPlayer.querySelector('.play-pause-btn');
 var loading = audioPlayer.querySelector('.loading');
 var progress = audioPlayer.querySelector('.progress');
 var sliders = audioPlayer.querySelectorAll('.slider');
-var volumeBtn = audioPlayer.querySelector('.volume-btn');
-var volumeControls = audioPlayer.querySelector('.volume-controls');
-var volumeProgress = volumeControls.querySelector('.slider .progress');
+
 var player = audioPlayer.querySelector('audio');
 var currentTime = audioPlayer.querySelector('.current-time');
 var totalTime = audioPlayer.querySelector('.total-time');
@@ -34,7 +32,7 @@ window.addEventListener('mousedown', function (event) {
 
 playpauseBtn.addEventListener('click', togglePlay);
 player.addEventListener('timeupdate', updateProgress);
-player.addEventListener('volumechange', updateVolume);
+
 player.addEventListener('loadedmetadata', function () {
   totalTime.textContent = formatTime(player.duration);
 });
@@ -44,10 +42,7 @@ player.addEventListener('ended', function () {
   player.currentTime = 0;
 });
 
-volumeBtn.addEventListener('click', function () {
-  volumeBtn.classList.toggle('open');
-  volumeControls.classList.toggle('hidden');
-});
+
 
 window.addEventListener('resize', directionAware);
 
@@ -91,16 +86,7 @@ function updateProgress() {
   currentTime.textContent = formatTime(current);
 }
 
-function updateVolume() {
-  volumeProgress.style.height = player.volume * 100 + '%';
-  if (player.volume >= 0.5) {
-    speaker.attributes.d.value = 'M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z';
-  } else if (player.volume < 0.5 && player.volume > 0.05) {
-    speaker.attributes.d.value = 'M0 7.667v8h5.333L12 22.333V1L5.333 7.667M17.333 11.373C17.333 9.013 16 6.987 14 6v10.707c2-.947 3.333-2.987 3.333-5.334z';
-  } else if (player.volume <= 0.05) {
-    speaker.attributes.d.value = 'M0 7.667v8h5.333L12 22.333V1L5.333 7.667';
-  }
-}
+
 
 function getRangeBox(event) {
   var rangeBox = event.target;
@@ -138,11 +124,6 @@ function rewind(event) {
   }
 }
 
-function changeVolume(event) {
-  if (inRange(event)) {
-    player.volume = getCoefficient(event);
-  }
-}
 
 function formatTime(time) {
   var min = Math.floor(time / 60);
@@ -166,35 +147,24 @@ function makePlay() {
 }
 
 function directionAware() {
-  if (window.innerHeight < 250) {
-    volumeControls.style.bottom = '-54px';
-    volumeControls.style.left = '54px';
-  } else if (audioPlayer.offsetTop < 154) {
-    volumeControls.style.bottom = '-164px';
-    volumeControls.style.left = '-3px';
-  } else {
-    volumeControls.style.bottom = '52px';
-    volumeControls.style.left = '-3px';
-  }
+  
 }
-var alarmTimeID = -1;
+
 function setalarm(){
   var hour= document.getElementById("hour").value;
   var minute= document.getElementById("minute").value;
   var second = document.getElementById("second").value;
   var ms = ((hour*60+minute)*60+second)*1000;
   console.log(ms);
-  alarmTimeID = setInterval(function(){ 
+  document.getElementById("state").innerHTML = "设置成功";
+
+  setTimeout(function(){
           if (player.paused) {
             playPause.attributes.d.value = "M0 0h6v24H0zM12 0h6v24h-6z";
             player.play();
           }
-          if(alarmTimeID>0)
-            {
-              clearInterval(alarmTimeID);
-              alarmTimeID = -1;
-              return;
-            }
-          }, ms);
+          document.getElementById("state").innerHTML = "无闹钟计划";
+
+          }, (ms).toString() );
 
 }
